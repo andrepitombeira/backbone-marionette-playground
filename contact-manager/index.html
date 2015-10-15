@@ -26,6 +26,12 @@
       <p>This is text that was rendered by our Marionette app.</p>
     </script>
 
+    <script type="text/template" id="different-static-template">
+        <p>
+          Text from a different template...
+        </p>
+    </script>
+
     <script src="./assets/js/vendor/jquery.js"></script>
     <script src="./assets/js/vendor/json2.js"></script>
     <script src="./assets/js/vendor/underscore.js"></script>
@@ -34,14 +40,26 @@
 
     <script type="text/javascript">
       var ContactManager = new Marionette.Application();
-        ContactManager.StaticView = Marionette.ItemView.extend({
-          el: "#main-region",
+
+      ContactManager.StaticView = Marionette.ItemView.extend({
           template: "#static-template"
       });
 
-      ContactManager.on("start", function(){
+      ContactManager.on("before:start", function() {
+        var RegionContainer = Marionette.LayoutView.extend({
+          el: "#app-container",
+
+          regions: {
+            main: "#main-region"
+          }
+        });
+
+        ContactManager.regions = new RegionContainer();
+      });
+
+      ContactManager.on("start", function() {
         var staticView = new ContactManager.StaticView();
-        staticView.render();
+        ContactManager.regions.main.show(staticView);
       });
 
       ContactManager.start();
