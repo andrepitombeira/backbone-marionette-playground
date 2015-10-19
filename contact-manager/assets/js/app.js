@@ -15,5 +15,3 @@ ContactManager.on("before:start", function() {
 ContactManager.on("start", function() {
   ContactManager.ContactsApp.List.Controller.listContacts();
 });
-
-ContactManager.start();
