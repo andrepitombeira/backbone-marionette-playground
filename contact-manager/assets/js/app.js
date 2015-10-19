@@ -11,3 +11,9 @@ ContactManager.on("before:start", function() {
 
   ContactManager.regions = new RegionContainer();
 });
+
+ContactManager.on("start", function() {
+  ContactManager.ContactsApp.List.Controller.listContacts();
+});
+
+ContactManager.start();
