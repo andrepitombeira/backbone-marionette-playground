@@ -22,7 +22,18 @@
     </div>
 
     <script type="text/template" id="contact-list-item">
-      <td><%- firstName %></td><td><%- lastName %></td>
+      <td><%- firstName %></td>
+      <td><%- lastName %></td>
+      <td>
+        <a href="#" class="btn btn-small js-show">
+          <i class="icon-eye-open"></i>
+          Show
+        </a>
+        <button type="button" name="button" class="btn btn-small js-delete">
+          <i class="icon-remove"></i>
+          Delete
+        </button>
+      </td>
     </script>
 
     <script type="text/template" id="contact-list">
@@ -30,9 +41,15 @@
         <tr>
           <th>First Name</th>
           <th>Last Name</th>
+          <th></th>
         </tr>
       </thead>
       <tbody></tbody>
+    </script>
+
+    <script type="text/template" id="contact-view">
+      <h1><%- firstName %> <%- lastName %></h1>
+      <p><strong>Phone number:</strong> <%- phoneNumber %></p>
     </script>
 
     <script src="./assets/js/vendor/jquery.js"></script>
@@ -44,6 +61,8 @@
     <script src="./assets/js/entities/contact.js"></script>
     <script src="./assets/js/apps/contacts/list/list_view.js"></script>
     <script src="./assets/js/apps/contacts/list/list_controller.js"></script>
+    <script src="./assets/js/apps/contacts/show/show_view.js"></script>
+    <script src="./assets/js/apps/contacts/show/show_controller.js"></script>
 
     <script type="text/javascript">
       ContactManager.start();
