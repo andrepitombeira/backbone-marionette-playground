@@ -11,6 +11,11 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 		}
 	};
 
+	ContactManager.on("contacts:list", function() {
+		ContactManager.navigate("contacts");
+		API.listContacts();
+	});
+
 	ContactsApp.on('start', function() {
 		new ContactsApp.Router({
 			controller: API

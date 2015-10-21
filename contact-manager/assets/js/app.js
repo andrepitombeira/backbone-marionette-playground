@@ -17,9 +17,7 @@ ContactManager.on("start", function() {
     Backbone.history.start();
 
     if (Backbone.history.fragment === "") {
-      Backbone.history.navigate("contacts");
-      ContactManager.ContactsApp.List.Controller.listContacts();
+      ContactManager.trigger("contacts:list");
     }
   }
-  ContactManager.ContactsApp.List.Controller.listContacts();
 });
