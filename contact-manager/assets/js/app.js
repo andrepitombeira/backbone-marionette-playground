@@ -13,5 +13,8 @@ ContactManager.on("before:start", function() {
 });
 
 ContactManager.on("start", function() {
+  if (Backbone.history) {
+    Backbone.history.start();
+  }
   ContactManager.ContactsApp.List.Controller.listContacts();
 });
