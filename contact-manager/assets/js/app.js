@@ -15,6 +15,11 @@ ContactManager.on("before:start", function() {
 ContactManager.on("start", function() {
   if (Backbone.history) {
     Backbone.history.start();
+
+    if (Backbone.history.fragment === "") {
+      Backbone.history.navigate("contacts");
+      ContactManager.ContactsApp.List.Controller.listContacts();
+    }
   }
   ContactManager.ContactsApp.List.Controller.listContacts();
 });
