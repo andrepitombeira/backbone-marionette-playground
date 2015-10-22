@@ -1,5 +1,10 @@
 var ContactManager = new Marionette.Application();
 
+ContactManager.navigate = function(route, options) {
+  options || (options = {});
+  Backbone.history.navigate(route, options);
+};
+
 ContactManager.on("before:start", function() {
   var RegionContainer = Marionette.LayoutView.extend({
     el: "#app-container",
