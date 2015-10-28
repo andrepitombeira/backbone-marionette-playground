@@ -23,7 +23,7 @@ ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backb
 
 	ContactManager.on("contact:show", function(id) {
 		ContactManager.navigate("contacts/" + id);
-		API.showContact();
+		API.showContact(id);
 	});
 
 	ContactsApp.on('start', function() {
