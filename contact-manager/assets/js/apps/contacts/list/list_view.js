@@ -9,18 +9,25 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 	});
 
 	List.Panel = Marionette.ItemView.extend({
-		template: "#contact-list-panel"
+		template: "#contact-list-panel",
+
+    triggers: {
+      "click button.js-new": "contact:new"
+    }
 	});
 
 	List.Contact = Marionette.ItemView.extend({
 			tagName: "tr",
 			template: "#contact-list-item",
 
+      triggers: {
+        "click td a.js-show": "contact:show",
+				"click td a.js-edit": "contact:edit",
+				"click button,js-delete": "contact:delete"
+      },
+
 			events: {
-				"click": "highlightName",
-				"click td a.js-show": "showClicked",
-				"click td a.js-edit": "editClicked",
-				"click button,js-delete": "deleteClicked"
+				"click": "highlightName"
 			},
 
 			flash: function(cssClass) {
@@ -32,26 +39,9 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 				});
 			},
 
-			showClicked: function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				this.trigger("contact:show", this.model);
-			},
-
-			editClicked: function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				this.trigger("contact:edit", this.model);
-			},
-
 			highlightName: function(e) {
 				e.preventDefault();
 				this.$el.toggleClass("warning");
-			},
-
-			deleteClicked: function(e) {
-				e.stopPropagation();
-				this.trigger("contact:delete", this.model);
 			},
 
 			remove: function() {
@@ -67,6 +57,20 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 		className: "table table-hover",
 		template: "#contact-list",
 		childView: List.Contact,
-		childViewContaier: "tbody"
+		childViewContaier: "tbody",
+
+    initialize: function() {
+      this.listenTo(this.collection, "reset", function() {
+        this.attachHtml = function(collectionView, childView, index) {
+          collectionView.$el.prepend(childView.el);
+        }
+      });
+    },
+
+    onRenderCollection: function() {
+      this.attachHtml = function(collectionView, childView, index) {
+        collectionView.$el.prepend(childView.el);
+      }
+    }
 	});
 });

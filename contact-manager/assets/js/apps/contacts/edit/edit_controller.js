@@ -12,6 +12,7 @@ ContactManager.module("ContactsApp.Edit", function(Edit, ContactManager, Backbon
 
 			$.when(fetchingContact).done(function(contact) {
 				var view;
+				
 				if (contact !== undefined) {
 					view = new Edit.Contact({
 						model: contact
