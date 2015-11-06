@@ -5,7 +5,8 @@ requirejs.config({
     jquery: "vendor/jquery",
     json2: "vendor/json2",
     marionette: "vendor/backbone.marionette",
-    underscore: "vendor/underscore"
+    underscore: "vendor/underscore",
+    app: "app"
   },
 
   shim: {
@@ -23,8 +24,6 @@ requirejs.config({
   }
 });
 
-require(["marionette"], function(bbm) {
-  console.log("jQuery version: ", $.fn.jquery);
-  console.log("underscore identity call: ", _.identity(5));
-  console.log("Marionette: ", bbm);
+require(["app"], function(ContactManager) {
+  ContactManager.start();
 });
