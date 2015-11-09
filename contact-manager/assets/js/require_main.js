@@ -4,11 +4,12 @@ requirejs.config({
     backbone: "vendor/backbone",
     jquery: "vendor/jquery",
     json2: "vendor/json2",
+    localstorage: "vendor/backbone.localstorage",
     marionette: "vendor/backbone.marionette",
-    underscore: "vendor/underscore",
-    app: "app"
+    text: "vendor/text",
+    tpl: "vendor/underscore-tpl",
+    underscore: "vendor/underscore"
   },
-
   shim: {
     underscore: {
       exports: "_"
@@ -20,7 +21,9 @@ requirejs.config({
     marionette: {
       deps: ["backbone"],
       exports: "Marionette"
-    }
+    },
+    localstorage: ["backbone"],
+    tpl: ["text"]
   }
 });
 
