@@ -3,7 +3,7 @@ define(["app"], function(ContactManager) {
   ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backbone, Marionette, $, _) {
     ContactsApp.Router = Marionette.AppRouter.extend({
       appRoutes: {
-        "contacts": "listContacts"
+        "contacts(/filter/criterion::criterion)": "listContacts"
       }
     });
 
@@ -18,6 +18,14 @@ define(["app"], function(ContactManager) {
     ContactManager.on("contacts:list", function() {
       ContactManager.navigate("contacts");
       API.listContacts();
+    });
+
+    ContactManager.on("contacts:filter", function(criterion) {
+      if (criterion) {
+        ContactManager.navigate("contacts/filter/criterion:" + criterion);
+      } else {
+        ContactManager.navigate("contacts");
+      }
     });
 
     ContactsApp.on("start", function() {
