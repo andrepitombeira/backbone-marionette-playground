@@ -8,12 +8,13 @@ requirejs.config({
     json2: "vendor/json2",
     localstorage: "vendor/backbone.localstorage",
     marionette: "vendor/backbone.marionette",
-    text: "vendor/text",
     spin: "vendor/spin",
     "spin.jquery": "vendor/spin.jquery",
+    text: "vendor/text",
     tpl: "vendor/underscore-tpl",
     underscore: "vendor/underscore"
   },
+
   shim: {
     underscore: {
       exports: "_"

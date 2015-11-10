@@ -90,7 +90,7 @@ Backbone.Picky = (function (Backbone, _) {
     },
 
     // Toggle select all / none. If some are selected, it
-    // will select all. If all are selected, it will select
+    // will select all. If all are selected, it will select 
     // none. If none are selected, it will select all.
     toggleSelectAll: function () {
       if (this.selectedLength === this.length) {

@@ -3,7 +3,9 @@ define(["app"], function(ContactManager) {
   ContactManager.module("ContactsApp", function(ContactsApp, ContactManager, Backbone, Marionette, $, _) {
     ContactsApp.Router = Marionette.AppRouter.extend({
       appRoutes: {
-        "contacts(/filter/criterion::criterion)": "listContacts"
+        "contacts": "listContacts",
+        "contacts(?filter=:criterion)": "listContacts",
+        "contacts/:id": "showContact"
       }
     });
 
@@ -11,6 +13,12 @@ define(["app"], function(ContactManager) {
       listContacts: function(criterion) {
         require(["apps/contacts/list/list_controller"], function(ListController) {
           ListController.listContacts(criterion);
+        });
+      },
+
+      showContact: function(id) {
+        require(["apps/contacts/show/show_controller"], function(ShowController){
+          ShowController.showContact(id);
         });
       }
     };
@@ -26,6 +34,11 @@ define(["app"], function(ContactManager) {
       } else {
         ContactManager.navigate("contacts");
       }
+    });
+
+    ContactManager.on("contact:show", function(id) {
+      ContactManager.navigate("contacts/" + id);
+      API.showContact(id);
     });
 
     ContactsApp.on("start", function() {

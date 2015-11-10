@@ -1,27 +1,35 @@
-ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _) {
-	Show.Controller = {
-		showContact: function(id) {
-			var loadingView = new ContactManager.Common.Views.Loading({
-				title: "Artificial Loading Delay",
-				message: "Data loading is delayed to demonstrate using a loading view."
-			});
-			ContactManager.regions.main.show(loadingView);
+define(["app", "apps/contacts/show/show_view"], function(ContactManager, View) {
+  ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbone, Marionette, $, _) {
+  	Show.Controller = {
+  		showContact: function(id) {
+        require(["common/view", "entities/contact"], function(CommonViews) {
+          var loadingView = new CommonViews.Loading({
+    				title: "Artificial Loading Delay",
+    				message: "Data loading is delayed to demonstrate using a loading view."
+    			});
 
-			var fetchingContact = ContactManager.request("contact:entity", id);
-			$.when(fetchingContact).done(function(contact) {
-				if (contact !== undefined) {
-					contactView = new Show.Contact({
-						model: contact
-					});
+    			ContactManager.regions.main.show(loadingView);
+    			var fetchingContact = ContactManager.request("contact:entity", id);
 
-					contactView.on("contact:edit", function(contact) {
-						ContactManager.trigger("contact:edit", contact.get("id"));
-					});
-				} else {
-					contactView = new Show.MissingContact();
-				}
-				ContactManager.regions.main.show(contactView);
-			});
-		}
-	}
+          $.when(fetchingContact).done(function(contact) {
+    				if (contact !== undefined) {
+    					contactView = new View.Contact({
+    						model: contact
+    					});
+
+    					contactView.on("contact:edit", function(contact) {
+    						ContactManager.trigger("contact:edit", contact.get("id"));
+    					});
+    				} else {
+    					contactView = new View.MissingContact();
+    				}
+
+    				ContactManager.regions.main.show(contactView);
+    			});
+        });
+  		}
+  	}
+  });
+
+  return ContactManager.ContactsApp.Show.Controller;
 });

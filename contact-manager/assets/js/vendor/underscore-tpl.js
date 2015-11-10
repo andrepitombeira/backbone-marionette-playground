@@ -23,10 +23,6 @@ define(['underscore', 'text'], function (_, text) {
 
     load: function (name, req, onLoadNative, config) {
       var onLoad = function (content) {
-
-        // Merge settings
-        _.extend(_.templateSettings, config.underscoreTemplateSettings || {})
-
         // compile the template
         content = _.template(content);
 
@@ -45,7 +41,7 @@ define(['underscore', 'text'], function (_, text) {
 
     write: function (pluginName, moduleName, write) {
       if (buildMap.hasOwnProperty(moduleName)) {
-        write('define("' + pluginName + '!' + moduleName + '", ["underscore"], function(_) { ' +
+        write('define("' + pluginName + '!' + moduleName + '", function () { ' +
           'return ' + buildMap[moduleName] + ';' +
         '});\n'
         );
