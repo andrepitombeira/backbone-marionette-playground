@@ -5,7 +5,8 @@ define(["app"], function(ContactManager) {
       appRoutes: {
         "contacts": "listContacts",
         "contacts(?filter=:criterion)": "listContacts",
-        "contacts/:id": "showContact"
+        "contacts/:id": "showContact",
+        "contacts/:id/edit": "editContact"
       }
     });
 
@@ -19,6 +20,12 @@ define(["app"], function(ContactManager) {
       showContact: function(id) {
         require(["apps/contacts/show/show_controller"], function(ShowController){
           ShowController.showContact(id);
+        });
+      },
+
+      editContact: function(id) {
+        require(["apps/contacts/edit/edit_controller"], function(EditController){
+          EditController.editContact(id);
         });
       }
     };
@@ -39,6 +46,11 @@ define(["app"], function(ContactManager) {
     ContactManager.on("contact:show", function(id) {
       ContactManager.navigate("contacts/" + id);
       API.showContact(id);
+    });
+
+    ContactManager.on("contact:edit", function(id) {
+      ContactManager.navigate("contacts/" + id + "/edit");
+      API.editContact(id);
     });
 
     ContactsApp.on("start", function() {
