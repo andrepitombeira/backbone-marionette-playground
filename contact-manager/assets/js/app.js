@@ -1,30 +1,31 @@
-define(["marionette", "jquery-ui"], function(Marionette){
+define(["marionette", "jquery-ui"], function(Marionette) {
   var ContactManager = new Marionette.Application();
 
-  ContactManager.navigate = function(route,  options){
+  ContactManager.navigate = function(route,  options) {
     options || (options = {});
     Backbone.history.navigate(route, options);
   };
 
-  ContactManager.getCurrentRoute = function(){
+  ContactManager.getCurrentRoute = function() {
     return Backbone.history.fragment
   };
 
-  ContactManager.startSubApp = function(appName, args){
+  ContactManager.startSubApp = function(appName, args) {
     var currentApp = appName ? ContactManager.module(appName) : null;
     if (ContactManager.currentApp === currentApp){ return; }
 
-    if (ContactManager.currentApp){
+    if (ContactManager.currentApp) {
       ContactManager.currentApp.stop();
     }
 
     ContactManager.currentApp = currentApp;
-    if(currentApp){
+
+    if (currentApp) {
       currentApp.start(args);
     }
   };
 
-  ContactManager.on("before:start", function(){
+  ContactManager.on("before:start", function() {
     var RegionContainer = Marionette.LayoutView.extend({
       el: "#app-container",
 
