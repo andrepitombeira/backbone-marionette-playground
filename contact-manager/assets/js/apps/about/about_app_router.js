@@ -1,5 +1,5 @@
 define(["app"], function(ContactManager) {
-  ContactManager.module("Roters.AboutApp", function(AboutAppRouter, ContactManager, Backbone, Marionette, $, _) {
+  ContactManager.module("Routers.AboutApp", function(AboutAppRouter, ContactManager, Backbone, Marionette, $, _) {
     AboutAppRouter.Router = Marionette.AppRouter.extend({
       appRoutes: {
         "about": "showAbout"
