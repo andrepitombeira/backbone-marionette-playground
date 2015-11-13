@@ -1,11 +1,15 @@
 ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
-  Entities.Contact = Backbone.Model.extend({
+  Entities.Contact = Entities.BaseModel.extend({
     urlRoot: "contacts_legacy",
 
     defaults: {
       firstName: "",
       lastName: "",
       phoneNumber: ""
+    },
+
+    url: function() {
+      return this.urlRoot + "/" + this.get("id") + ".json";
     },
 
     parse: function(response) {
@@ -21,12 +25,6 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       } else {
         this.set({fullName: this.get("firstName") + " " + this.get("lastName")});
       }
-    },
-
-    toJSON: function() {
-      return {
-        data: _.clone(this.attributes)
-      };
     },
 
     validate: function(attrs, options) {
@@ -45,6 +43,12 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       if( ! _.isEmpty(errors)){
         return errors;
       }
+    },
+
+    sync: function(method, model, options) {
+      console.log("Contacts sync function called.");
+
+      return Entities.BaseModel.prototype.sync.call(this, method, model, options);
     }
   });
 
