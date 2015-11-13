@@ -1,11 +1,32 @@
 ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
   Entities.Contact = Backbone.Model.extend({
-    urlRoot: "contacts",
+    urlRoot: "contacts_legacy",
 
     defaults: {
       firstName: "",
       lastName: "",
       phoneNumber: ""
+    },
+
+    parse: function(response) {
+      var data = response;
+
+      if (response) {
+        if (response && response.contact) {
+          data = response.contact;
+        }
+        data.fullName = data.firstName + " ";
+        data.fullName += data.lastName;
+        return data;
+      } else {
+        this.set({fullName: this.get("firstName") + " " + this.get("lastName")});
+      }
+    },
+
+    toJSON: function() {
+      return {
+        data: _.clone(this.attributes)
+      };
     },
 
     validate: function(attrs, options) {
@@ -28,7 +49,7 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
   });
 
   Entities.ContactCollection = Backbone.Collection.extend({
-    url: "contacts",
+    url: "contacts_legacy",
     model: Entities.Contact,
     comparator: "firstName"
   });
