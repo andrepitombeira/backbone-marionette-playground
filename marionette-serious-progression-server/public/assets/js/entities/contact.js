@@ -1,6 +1,6 @@
 ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
   Entities.Contact = Entities.BaseModel.extend({
-    urlRoot: "contacts_legacy",
+    urlRoot: "contacts",
 
     defaults: {
       firstName: "",
@@ -53,7 +53,7 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
   });
 
   Entities.ContactCollection = Backbone.Collection.extend({
-    url: "contacts_legacy",
+    url: "contacts",
     model: Entities.Contact,
     comparator: "firstName"
   });
