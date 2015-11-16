@@ -5,7 +5,8 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
     defaults: {
       firstName: "",
       lastName: "",
-      phoneNumber: ""
+      phoneNumber: "",
+      changedOnServer: false
     },
 
     url: function() {
