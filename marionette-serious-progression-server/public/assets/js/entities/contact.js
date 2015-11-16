@@ -61,13 +61,19 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
   });
 
   var API = {
-    getContactEntities: function() {
+    getContactEntities: function(options) {
       var contacts = new Entities.ContactCollection();
       var defer = $.Deferred();
-      contacts.fetch({
-        success: function(data) {
-          defer.resolve(data);
-        }
+      options || (options = {});
+      defer.then(options.success, options.error);
+      var response = contacts.fetch(_.omit(options, 'success', 'error'));
+
+      response.done(function() {
+        defer.resolveWith(response, [contacts]);
+      });
+
+      response.fail(function() {
+        defer.rejectWith(response, arguments);
       });
 
       return defer.promise();
@@ -93,8 +99,8 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
     }
   };
 
-  ContactManager.reqres.setHandler("contact:entities", function(){
-    return API.getContactEntities();
+  ContactManager.reqres.setHandler("contact:entities", function(options){
+    return API.getContactEntities(options);
   });
 
   ContactManager.reqres.setHandler("contact:entity", function(id, options){

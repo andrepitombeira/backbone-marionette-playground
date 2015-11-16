@@ -10,12 +10,12 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
       var contactsListLayout = new List.Layout();
       var contactsListPanel = new List.Panel();
 
-      $.when(fetchingContacts).done(function(contacts){
+      $.when(fetchingContacts).done(function(contacts) {
         var filteredContacts = ContactManager.Entities.FilteredCollection({
           collection: contacts,
-          filterFunction: function(filterCriterion){
+          filterFunction: function(filterCriterion) {
             var criterion = filterCriterion.toLowerCase();
-            return function(contact){
+            return function(contact) {
               if(contact.get("firstName").toLowerCase().indexOf(criterion) !== -1
                 || contact.get("lastName").toLowerCase().indexOf(criterion) !== -1
                 || contact.get("phoneNumber").toLowerCase().indexOf(criterion) !== -1){
@@ -127,6 +127,8 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
         });
 
         ContactManager.regions.main.show(contactsListLayout);
+      }).fail(function() {
+        alert("An unprocessed error happened. Please try again!");
       });
     }
   }
