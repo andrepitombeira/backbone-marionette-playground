@@ -5,23 +5,30 @@ ContactManager.module("ContactsApp.Show", function(Show, ContactManager, Backbon
 
       ContactManager.regions.main.show(loadingView);
 
-      var fetchingContact = ContactManager.request("contact:entity", id);
-      $.when(fetchingContact).done(function(contact){
-        var contactView;
-        if(contact !== undefined){
-          contactView = new Show.Contact({
-            model: contact
-          });
+      var fetchingContact = ContactManager.request("contact:entity", id, {
+        error: function(xhr, responseText, error) {
+          console.log("Some error happened (processed in error callback)");
+        }
+      });
+      
+      $.when(fetchingContact).done(function(contact) {
+        var contactView = new Show.Contact({
+          model: contact
+        });
 
-          contactView.on("contact:edit", function(contact){
-            ContactManager.trigger("contact:edit", contact.get("id"));
-          });
-        }
-        else{
-          contactView = new Show.MissingContact();
-        }
+        contactView.on("contact:edit", function(contact){
+          ContactManager.trigger("contact:edit", contact.get("id"));
+        });
 
         ContactManager.regions.main.show(contactView);
+      }).fail(function(response) {
+        console.log("Some error happened (processed in deferreds fail callback)");
+        if (response.status === 404) {
+          var contactView = new Show.MissingContact();
+          ContactManager.regions.main.show(contactView);
+        } else {
+          alert("An unprocessed error happened. Please try again!");
+        }
       });
     }
   }
