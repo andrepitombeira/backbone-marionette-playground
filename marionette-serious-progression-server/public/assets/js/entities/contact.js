@@ -34,23 +34,14 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       }
     },
 
-    validate: function(attrs, options) {
-      var errors = {}
+    validation: {
+      firstName: {
+        required: true
+      },
 
-      if (! attrs.firstName) {
-        errors.firstName = "can't be blank";
-      }
-
-      if (! attrs.lastName) {
-        errors.lastName = "can't be blank";
-      } else {
-        if (attrs.lastName.length < 2) {
-          errors.lastName = "is too short";
-        }
-      }
-
-      if( ! _.isEmpty(errors)){
-        return errors;
+      lastName: {
+        required: true,
+        minLength: 2
       }
     },
 
@@ -60,6 +51,8 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       return Entities.BaseModel.prototype.sync.call(this, method, model, options);
     }
   });
+
+  _.extend(Entities.Contact.prototype, Backbone.Validation.mixin);
 
   Entities.ContactCollection = Backbone.Collection.extend({
     url: "contacts",

@@ -102,4 +102,9 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       return Backbone.Model.prototype.sync.call(this, method, model, options);
     }
   });
+
+  _.extend(Backbone.Validation.messages, {
+    required: 'is required',
+    minLength: 'is too short (min {1} characters)'
+  });
 });
