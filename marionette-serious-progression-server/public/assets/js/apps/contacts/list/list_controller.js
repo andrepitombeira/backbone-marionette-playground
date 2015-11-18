@@ -5,24 +5,17 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 
       ContactManager.regions.main.show(loadingView);
 
-      var fetchingContacts = ContactManager.request("contact:entities");
+      var fetchingContacts = ContactManager.request("contact:entities", {parameters: options});
 
       var contactsListLayout = new List.Layout();
       var contactsListPanel = new List.Panel();
 
       $.when(fetchingContacts).done(function(contacts) {
         if (options.criterion) {
-          contacts.parameters.set({
-            page: 1,
-            criterion: options.criterion
-          });
-
           contactsListPanel.once("show", function() {
             contactsListPanel.triggerMethod("set:filter:criterion", options.criterion);
           });
         }
-
-        contacts.goTo(options.page);
 
         var contactsListView = new ContactManager.Common.Views.PaginatedView({
           collection: contacts,

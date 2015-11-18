@@ -54,13 +54,13 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 
   _.extend(Entities.Contact.prototype, Backbone.Validation.mixin);
 
-  Entities.ContactCollection = Backbone.Paginator.clientPager.extend({
+  Entities.ContactCollection = Backbone.Paginator.requestPager.extend({
     model: Entities.Contact,
     comparator: "firstName",
 
     paginator_core: {
       dataType: "json",
-      url: "contacts"
+      url: "contacts_paginated?"
     },
 
     paginator_ui: {
@@ -68,6 +68,22 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       currentPage: 1,
       perPage: 10,
       pagesInRange: 2
+    },
+
+    server_api: {
+      count: function() { return this.perPage },
+      offset: function() {
+        return ((this.parameters.get("page") || 1) - 1) * this.perPage;
+      },
+      filter: function() { return this.parameters.get("criterion"); }
+    },
+
+    parse: function(response) {
+      var data = response.results;
+      this.totalRecords = response.resultCount;
+      this.totalPages = Math.ceil(this.totalRecords / this.perPage);
+      this.currentPage = this.parameters.get("page");
+      return data;
     },
 
     initialize: function(options) {
@@ -80,21 +96,25 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 
       this.listenTo(this.parameters, "change", function(model) {
         if (_.has(model.changed, "criterion")) {
-          self.setFilter(["firstName", "lastName", "phoneNumber"], self.parameters.get("criterion"));
+          self.server_api.filter = self.parameters.get("criterion");
         }
 
-        if (_.has(model.changed, "page")) {
-          self.goTo(parseInt(self.parameters.get("page"), 10));
-        }
+        $.when(this.pager()).done(function() {
+          self.trigger("page:change:after");
+        });
+      });
 
-        self.trigger("page:change:after");
+      this.on("sync", function() {
+        this.sort({silent: true});
+        this.trigger("reset");
       });
     }
   });
 
   var API = {
     getContactEntities: function(options) {
-      var contacts = new Entities.ContactCollection();
+      var contacts = new Entities.ContactCollection([], {parameters: options.parameters});
+      delete options.parameters;
       var defer = $.Deferred();
       options || (options = {});
       options.reset = true;
