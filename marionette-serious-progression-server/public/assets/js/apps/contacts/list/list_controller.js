@@ -1,6 +1,6 @@
 ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbone, Marionette, $, _){
   List.Controller = {
-    listContacts: function(criterion){
+    listContacts: function(options) {
       var loadingView = new ContactManager.Common.Views.Loading();
 
       ContactManager.regions.main.show(loadingView);
@@ -11,34 +11,40 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
       var contactsListPanel = new List.Panel();
 
       $.when(fetchingContacts).done(function(contacts) {
-        var filteredContacts = ContactManager.Entities.FilteredCollection({
-          collection: contacts,
-          filterFunction: function(filterCriterion) {
-            var criterion = filterCriterion.toLowerCase();
-            return function(contact) {
-              if(contact.get("firstName").toLowerCase().indexOf(criterion) !== -1
-                || contact.get("lastName").toLowerCase().indexOf(criterion) !== -1
-                || contact.get("phoneNumber").toLowerCase().indexOf(criterion) !== -1){
-                  return contact;
-              }
-            };
-          }
-        });
+        if (options.criterion) {
+          contacts.parameters.set({
+            page: 1,
+            criterion: options.criterion
+          });
 
-        if(criterion){
-          filteredContacts.filter(criterion);
-          contactsListPanel.once("show", function(){
-            contactsListPanel.triggerMethod("set:filter:criterion", criterion);
+          contactsListPanel.once("show", function() {
+            contactsListPanel.triggerMethod("set:filter:criterion", options.criterion);
           });
         }
 
-        var contactsListView = new List.Contacts({
-          collection: filteredContacts
+        contacts.goTo(options.page);
+
+        var contactsListView = new ContactManager.Common.Views.PaginatedView({
+          collection: contacts,
+          mainView: List.Contacts,
+          propagatedEvents: [
+            "childview:contact:show",
+            "childview:contact:edit",
+            "childview:contact:delete"
+          ]
         });
 
-        contactsListPanel.on("contacts:filter", function(filterCriterion){
-          filteredContacts.filter(filterCriterion);
-          ContactManager.trigger("contacts:filter", filterCriterion);
+        contactsListView.on("page:change", function() {
+          ContactManager.trigger("page:change", _.clone(contacts.parameters.attributes));
+        });
+
+        contactsListPanel.on("contacts:filter", function(filterCriterion) {
+          contacts.parameters.set({
+            page: 1,
+            criterion: filterCriterion
+          });
+
+          ContactManager.trigger("contacts:filter", _.clone(contacts.parameters.attributes));
         });
 
         contactsListLayout.on("show", function(){
