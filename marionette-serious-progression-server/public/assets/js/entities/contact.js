@@ -1,4 +1,4 @@
-ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _){
+ContactManager.module("Entities", function(Entities, ContactManager, Backbone, Marionette, $, _) {
   Entities.Contact = Entities.BaseModel.extend({
     urlRoot: "contacts",
 
@@ -13,12 +13,10 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       lastName: "",
       phoneNumber: "",
       changedOnServer: false
-    },
+    }
+  });
 
-    url: function() {
-      return this.urlRoot + "/" + this.get("id") + ".json";
-    },
-
+  _.extend(Entities.Contact.prototype, Backbone.Validation.mixin, {
     parse: function(response) {
       var data = response;
 
@@ -26,8 +24,10 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
         if (response && response.contact) {
           data = response.contact;
         }
+
         data.fullName = data.firstName + " ";
         data.fullName += data.lastName;
+
         return data;
       } else {
         this.set({fullName: this.get("firstName") + " " + this.get("lastName")});
@@ -51,8 +51,6 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       return Entities.BaseModel.prototype.sync.call(this, method, model, options);
     }
   });
-
-  _.extend(Entities.Contact.prototype, Backbone.Validation.mixin);
 
   Entities.ContactCollection = Backbone.Paginator.requestPager.extend({
     model: Entities.Contact,
@@ -78,14 +76,6 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       filter: function() { return this.parameters.get("criterion"); }
     },
 
-    parse: function(response) {
-      var data = response.results;
-      this.totalRecords = response.resultCount;
-      this.totalPages = Math.ceil(this.totalRecords / this.perPage);
-      this.currentPage = this.parameters.get("page");
-      return data;
-    },
-
     initialize: function(options) {
       options || (options = {});
       var params = options.parameters || { page: 1 };
@@ -108,6 +98,16 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
         this.sort({silent: true});
         this.trigger("reset");
       });
+    }
+  });
+
+  _.extend(Entities.ContactCollection.prototype, {
+    parse: function(response) {
+      var data = response.results;
+      this.totalRecords = response.resultCount;
+      this.totalPages = Math.ceil(this.totalRecords / this.perPage);
+      this.currentPage = this.parameters.get("page");
+      return data;
     }
   });
 

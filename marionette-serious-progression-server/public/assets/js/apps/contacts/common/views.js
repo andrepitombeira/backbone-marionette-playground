@@ -2,26 +2,12 @@ ContactManager.module("ContactsApp.Common.Views", function(Views, ContactManager
   Views.Form = Marionette.ItemView.extend({
     template: "#contact-form",
 
-    initialize: function() {
-      Backbone.Validation.bind(this, {
-        valid: function(view, attr) {
-          // remove errors on the `attr` attribute from the view
-        },
-
-        invalid: function(view, attr, error) {
-          // add error on the `attr` attribute to the view
-        }
-      });
-    },
-
-    onBeforeClose: function() {
-      Backbone.Validation.unbind(this);
-    },
-
     events: {
       "click button.js-submit": "submitClicked"
-    },
+    }
+  });
 
+  _.extend(Views.Form.prototype, {
     submitClicked: function(e) {
       e.preventDefault();
       var data = Backbone.Syphon.serialize(this);
