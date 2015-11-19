@@ -1,14 +1,14 @@
-ContactManager.module("HeaderApp.List", function(List, ContactManager, Backbone, Marionette, $, _){
-  List.Controller = {
-    listHeader: function(){
+ContactManager.module("HeaderApp.List", function(List, ContactManager, Backbone, Marionette, $, _) {
+  var Controller = Marionette.Controller.extend({
+    listHeader: function() {
       var links = ContactManager.request("header:entities");
       var headers = new List.Headers({collection: links});
 
-      headers.on("brand:clicked", function(){
+      this.listenTo(headers, "brand:clicked", function() {
         ContactManager.trigger("contacts:list");
       });
 
-      headers.on("childview:navigate", function(childView, model){
+      this.listenTo(headers, "childview:navigate", function(childview, model) {
         var trigger = model.get("navigationTrigger");
         ContactManager.trigger(trigger);
       });
@@ -16,11 +16,17 @@ ContactManager.module("HeaderApp.List", function(List, ContactManager, Backbone,
       ContactManager.regions.header.show(headers);
     },
 
-    setActiveHeader: function(headerUrl){
+    setActiveHeader: function(headerUrl) {
       var links = ContactManager.request("header:entities");
-      var headerToSelect = links.find(function(header){ return header.get("url") === headerUrl; });
+
+      var headerToSelect = links.find(function(header) {
+        return header.get("url") === headerUrl;
+      });
+
       headerToSelect.select();
       links.trigger("reset");
     }
-  };
+  });
+
+  List.Controller = new Controller();
 });
