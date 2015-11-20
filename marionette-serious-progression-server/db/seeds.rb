@@ -14,3 +14,10 @@ require 'ffaker'
     c.phone_number = FFaker::PhoneNumber.phone_number
   end
 end
+
+Contact.all.each do |c|
+  rand(9).times do |i|
+    acquaintance = Contact.first(:offset => rand(Contact.count))
+    c.acquaintances << acquaintance if acquaintance.id != c.id
+  end
+end
