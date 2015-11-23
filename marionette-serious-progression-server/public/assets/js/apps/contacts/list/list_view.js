@@ -41,7 +41,6 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
     triggers: {
       "click td a.js-show": "contact:show",
       "click td a.js-edit": "contact:edit",
-      "click button.js-delete": "contact:delete"
     },
 
     events: {
@@ -50,6 +49,13 @@ ContactManager.module("ContactsApp.List", function(List, ContactManager, Backbon
 
     modelEvents: {
       "change": "render"
+    },
+
+    behaviors: {
+      Confirmable: {
+        event: "contact:delete",
+        callback: function() {console.log("Delete confirmed!");}
+      }
     },
 
     flash: function(cssClass){
