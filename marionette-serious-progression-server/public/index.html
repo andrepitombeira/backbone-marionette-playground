@@ -192,6 +192,30 @@
       <div class="js-pagination-main"></div>
     </script>
 
+    <script type="text/template" id="login">
+      <h1>Login</h1>
+      <div class="alert alert-error" style="display:none;"></div>
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for="username">Username</label>
+          <div class="controls">
+            <input type="text" id="username" placeholder="Username">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="password">Password</label>
+          <div class="controls">
+            <input type="password" id="password" placeholder="Password">
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn" id="loginButton">Sign in</button>
+          </div>
+        </div>
+      </form>
+    </script>
+
     <script src="./assets/js/vendor/jquery.js"></script>
     <script src="./assets/js/vendor/jquery-ui-1.10.3.js"></script>
     <script src="./assets/js/vendor/json2.js"></script>
@@ -222,6 +246,10 @@
     <script src="./assets/js/apps/contacts/edit/edit_view.js"></script>
     <script src="./assets/js/apps/contacts/edit/edit_controller.js"></script>
     <script src="./assets/js/apps/contacts/new/new_view.js"></script>
+
+    <script src="./assets/js/apps/auth/auth_app.js"></script>
+    <script src="./assets/js/apps/auth/login/login_view.js"></script>
+    <script src="./assets/js/apps/auth/login/login_controller.js"></script>
 
     <script src="./assets/js/apps/about/about_app.js"></script>
     <script src="./assets/js/apps/about/show/show_view.js"></script>
