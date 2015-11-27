@@ -180,6 +180,7 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
           ContactManager.trigger("auth:login");
           ContactManager.navigate("login");
         }
+
       };
 
       return Backbone.Model.prototype.sync.call(this, method, model, options);

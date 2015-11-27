@@ -12,7 +12,8 @@ ContactManager.module("AuthApp", function(AuthApp, ContactManager, Backbone, Mar
     },
 
     logout: function() {
-      AuthApp.Login.Controller.showLogout();
+      var options= {isLogout: true};
+      AuthApp.Login.Controller.showLogin(options);
     }
   };
 
@@ -21,7 +22,7 @@ ContactManager.module("AuthApp", function(AuthApp, ContactManager, Backbone, Mar
   });
 
   ContactManager.on("auth:logout", function() {
-
+    API.logout();
   });
 
   AuthApp.on("start", function() {

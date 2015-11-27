@@ -27,12 +27,18 @@ ContactManager.module("HeaderApp.List", function(List, ContactManager, Backbone,
     childViewContainer: "ul",
 
     events: {
-      "click a.brand": "brandClicked"
+      "click a.brand": "brandClicked",
+      "click .logout": "logoutClicked"
     },
 
     brandClicked: function(e){
       e.preventDefault();
       this.trigger("brand:clicked");
+    },
+
+    logoutClicked: function(e){
+      e.preventDefault();
+      ContactManager.trigger("auth:logout");
     }
   });
 });

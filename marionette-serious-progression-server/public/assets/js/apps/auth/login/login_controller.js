@@ -24,19 +24,16 @@ ContactManager.module("AuthApp.Login", function(Login, ContactManager, Backbone,
     },
 
     logout: function() {
-      var url = '/api/logout';
-
-      var formValues = {
-        username: username
-      };
+      var url = '/sign_out';
 
       $.ajax({
         url: url,
-        type:'POST',
+        type:'DELETE',
         dataType:"json",
-        data: formValues,
         success: function(ok) {
-          console.log('LOGOUT success');
+          window.localStorage.removeItem('token');
+          ContactManager.trigger("auth:login");
+          ContactManager.navigate("login");
         }
       });
     },
@@ -45,7 +42,7 @@ ContactManager.module("AuthApp.Login", function(Login, ContactManager, Backbone,
       var view = new Login.Show();
 
       if (options && options.isLogout) {
-        //logout
+        this.logout();
       }
 
       this.listenTo(view, 'authenticate', function(data) {
