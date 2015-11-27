@@ -1,4 +1,5 @@
 class AcquaintanceshipsController < ApplicationController
+  before_action :authorize!
   before_action :set_acquaintanceship
 
   respond_to :html, :json

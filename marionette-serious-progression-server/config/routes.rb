@@ -15,5 +15,9 @@ ContactManager::Application.routes.draw do
 
   post '/users' => 'users#create'
 
+  post '/sign_in' => 'authentication#sign_in'
+  get '/auth_valid' => 'authentication#validate'
+  delete '/sign_out' => 'authentication#destroy'
+
   root 'welcome#index'
 end

@@ -5,21 +5,20 @@ class User < ActiveRecord::Base
 
   validates :login, presence: true, uniqueness: { case_sensitive: false }
 
-  def authenticate_by_token(token)
-    user = User.find_by(token: token)
+  class << self
+    def authenticate_by_token(token)
+      user = User.find_by(token: token)
 
-    if user && user.token_expires_at > Time.now
-      return user
+      if user && user.token_expires_at && user.token_expires_at > Time.now
+        return user
+      end
     end
   end
 
-  def update_token
-    self.token = SecureRandom.hex(30)
-    self.token_expires_at = 1.week.from_now
-  end
+  def generated_credentials
+    set_token && save!
 
-  def credentials
-    attributes.slice(:token, :token_expires_at)
+    attributes.slice('token', 'token_expires_at')
   end
 
   def as_json(options = {})
@@ -41,5 +40,18 @@ class User < ActiveRecord::Base
     end
 
     result
+  end
+
+  def destroy_token
+    self.token = nil
+    self.token_expires_at = nil
+    save!
+  end
+
+  private
+
+  def set_token
+    self.token = SecureRandom.hex(30)
+    self.token_expires_at = 1.week.from_now
   end
 end

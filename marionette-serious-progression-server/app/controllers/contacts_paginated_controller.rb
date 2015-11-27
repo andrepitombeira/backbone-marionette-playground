@@ -1,4 +1,5 @@
 class ContactsPaginatedController < ApplicationController
+  before_action :authorize!
   before_action :set_contact, except: [:index, :new, :create]
 
   respond_to :json

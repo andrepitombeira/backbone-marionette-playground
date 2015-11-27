@@ -36,4 +36,15 @@ class ApplicationController < ActionController::Base
       val
     end
   end
+
+  def current_user
+    @current_user ||= User.authenticate_by_token(request.headers['X-User-Token'])
+  end
+
+  def authorize!
+    unless current_user
+      render json: { errors: ['Invalid token'] }, status: 401
+      return
+    end
+  end
 end
