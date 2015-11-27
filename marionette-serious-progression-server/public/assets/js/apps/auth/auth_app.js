@@ -12,12 +12,12 @@ ContactManager.module("AuthApp", function(AuthApp, ContactManager, Backbone, Mar
     },
 
     logout: function() {
-
+      AuthApp.Login.Controller.showLogout();
     }
   };
 
   ContactManager.on("auth:login", function() {
-
+    API.login();
   });
 
   ContactManager.on("auth:logout", function() {

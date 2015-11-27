@@ -99,6 +99,12 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
     },
 
     sync: function(method, model, options) {
+      options = options || {};
+
+      options.beforeSend = function(xhr) {
+        xhr.setRequestHeader('X-User-Token', window.localStorage.getItem("token"))
+      }
+
       return Backbone.Model.prototype.sync.call(this, method, model, options);
     }
   });

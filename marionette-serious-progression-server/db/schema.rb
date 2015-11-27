@@ -19,9 +19,9 @@ ActiveRecord::Schema.define(version: 20151127104105) do
   end
 
   create_table "contacts", force: :cascade do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "phone_number"
+    t.string   "first_name",   limit: 255
+    t.string   "last_name",    limit: 255
+    t.string   "phone_number", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -72,6 +72,16 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
       acquaintances: [],
       strangers: [],
       changedOnServer: false
+    },
+
+    sync: function(method, model, options) {
+      options = options || {};
+
+      options.beforeSend = function(xhr) {
+        xhr.setRequestHeader('X-User-Token', window.localStorage.getItem("token"))
+      }
+
+      return Backbone.Model.prototype.sync.call(this, method, model, options);
     }
   });
 
@@ -156,6 +166,16 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
         this.sort({silent: true});
         this.trigger("reset");
       });
+    },
+
+    sync: function(method, model, options) {
+      options = options || {};
+
+      options.beforeSend = function(xhr) {
+        xhr.setRequestHeader('X-User-Token', window.localStorage.getItem("token"))
+      }
+
+      return Backbone.Model.prototype.sync.call(this, method, model, options);
     }
   });
 

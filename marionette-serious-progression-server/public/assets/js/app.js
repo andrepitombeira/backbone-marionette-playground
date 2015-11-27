@@ -62,6 +62,16 @@ ContactManager.on("start", function(){
   if(Backbone.history){
     Backbone.history.start();
 
+    $.ajaxSetup({
+      statusCode: {
+        401: function() {
+          console.log('XUXXU');
+          ContactManager.trigger("auth:login");
+          ContactManager.navigate("login");
+        }
+      }
+    });
+
     if(this.getCurrentRoute() === ""){
       ContactManager.trigger("contacts:list");
     }

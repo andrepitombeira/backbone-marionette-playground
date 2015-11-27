@@ -1,12 +1,12 @@
 ContactManager.module("AuthApp.Login", function(Login, ContactManager, Backbone, Marionette, $, _) {
   var Controller = Marionette.Controller.extend({
     authenticate: function(username, password, authorized, unauthorized) {
-      var url = '/api/login';
+      var url = '/sign_in';
 
       console.log('Loggin in... ');
 
       var formValues = {
-        username: username,
+        login: username,
         password: password
       };
 
@@ -15,18 +15,43 @@ ContactManager.module("AuthApp.Login", function(Login, ContactManager, Backbone,
         type:'POST',
         dataType:"json",
         data: formValues,
-        success: function(ok) {
-          if (ok) {
-            authorized();
-          } else {
-            unauthorized();
-          }
+        success: function(data) {
+          console.log(data, 'DATA: ');
+          window.localStorage.setItem("token", data.entity.token);
+          ContactManager.trigger("contacts:list");
+        },
+        error: function() {
+          console.log("Error!");
         }
       });
     },
 
-    showLogin: function() {
+    logout: function() {
+      var url = '/api/logout';
+
+      console.log('Logout... ');
+
+      var formValues = {
+        username: username
+      };
+
+      $.ajax({
+        url: url,
+        type:'POST',
+        dataType:"json",
+        data: formValues,
+        success: function(ok) {
+          console.log('LOGOUT success');
+        }
+      });
+    },
+
+    showLogin: function(options) {
       var view = new Login.Show();
+
+      if (options && options.isLogout) {
+        //logout
+      }
 
       this.listenTo(view, 'authenticate', function(data) {
         this.authenticate(data.username, data.password, data.authorized, data.unauthorized);
