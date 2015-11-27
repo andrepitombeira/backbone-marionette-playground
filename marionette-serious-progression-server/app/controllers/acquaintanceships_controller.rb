@@ -35,6 +35,7 @@ class AcquaintanceshipsController < ApplicationController
   end
 
   private
+
     def set_acquaintanceship
       @acquaintanceship = Acquaintanceship.where("contact_id = ? AND acquaintance_id = ?", params[:contact], params[:acquaintance]).limit(1).first
     end

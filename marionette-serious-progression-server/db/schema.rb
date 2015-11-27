@@ -13,12 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20140301194602) do
 
-  create_table "acquaintanceships", force: true do |t|
+  create_table "acquaintanceships", force: :cascade do |t|
     t.integer "contact_id"
     t.integer "acquaintance_id"
   end
 
-  create_table "contacts", force: true do |t|
+  create_table "contacts", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "phone_number"
