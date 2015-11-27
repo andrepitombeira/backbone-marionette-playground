@@ -31,9 +31,9 @@ class ApplicationController < ActionController::Base
         val.delete k
         val[k.underscore] = deep_snake_case_params(v)
       end
-     val
+      val
     else
-     val
+      val
     end
   end
 end
