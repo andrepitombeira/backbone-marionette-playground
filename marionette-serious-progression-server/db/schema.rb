@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140301194602) do
+ActiveRecord::Schema.define(version: 20151127104105) do
 
   create_table "acquaintanceships", force: :cascade do |t|
     t.integer "contact_id"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 20140301194602) do
     t.string   "phone_number"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "login"
+    t.string   "password_digest"
+    t.string   "token"
+    t.datetime "token_expires_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
 end

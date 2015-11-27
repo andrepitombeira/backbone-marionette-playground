@@ -13,5 +13,7 @@ ContactManager::Application.routes.draw do
 
   get 'languages/:language' => 'languages#translations'
 
+  post '/users' => 'users#create'
+
   root 'welcome#index'
 end
