@@ -173,7 +173,14 @@ ContactManager.module("Entities", function(Entities, ContactManager, Backbone, M
 
       options.beforeSend = function(xhr) {
         xhr.setRequestHeader('X-User-Token', window.localStorage.getItem("token"))
-      }
+      };
+
+      options.error = function(xhr) {
+        if (xhr.status === 401) {
+          ContactManager.trigger("auth:login");
+          ContactManager.navigate("login");
+        }
+      };
 
       return Backbone.Model.prototype.sync.call(this, method, model, options);
     }

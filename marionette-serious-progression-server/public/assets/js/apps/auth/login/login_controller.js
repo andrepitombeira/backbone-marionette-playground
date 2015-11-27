@@ -3,8 +3,6 @@ ContactManager.module("AuthApp.Login", function(Login, ContactManager, Backbone,
     authenticate: function(username, password, authorized, unauthorized) {
       var url = '/sign_in';
 
-      console.log('Loggin in... ');
-
       var formValues = {
         login: username,
         password: password
@@ -16,7 +14,6 @@ ContactManager.module("AuthApp.Login", function(Login, ContactManager, Backbone,
         dataType:"json",
         data: formValues,
         success: function(data) {
-          console.log(data, 'DATA: ');
           window.localStorage.setItem("token", data.entity.token);
           ContactManager.trigger("contacts:list");
         },
@@ -28,8 +25,6 @@ ContactManager.module("AuthApp.Login", function(Login, ContactManager, Backbone,
 
     logout: function() {
       var url = '/api/logout';
-
-      console.log('Logout... ');
 
       var formValues = {
         username: username

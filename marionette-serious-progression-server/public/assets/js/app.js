@@ -65,7 +65,6 @@ ContactManager.on("start", function(){
     $.ajaxSetup({
       statusCode: {
         401: function() {
-          console.log('XUXXU');
           ContactManager.trigger("auth:login");
           ContactManager.navigate("login");
         }
